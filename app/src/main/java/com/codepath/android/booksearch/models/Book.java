@@ -6,12 +6,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 
+@Parcel
 public class Book {
     private String openLibraryId;
     private String author;
     private String title;
+
+    // empty constructor needed by the Parceler library
+    public Book() {
+    }
+
+    public Book(String openLibraryId, String author, String title) {
+        this.openLibraryId = openLibraryId;
+        this.author = author;
+        this.title = title;
+    }
 
     public String getOpenLibraryId() {
         return openLibraryId;

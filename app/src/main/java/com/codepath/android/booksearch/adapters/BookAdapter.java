@@ -1,18 +1,25 @@
 package com.codepath.android.booksearch.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codepath.android.booksearch.R;
+import com.codepath.android.booksearch.activities.BookDetailActivity;
 import com.codepath.android.booksearch.models.Book;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +59,23 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickListener.onItemClick(itemView, getAdapterPosition());
+                    // gets item position
+                    int position = getAdapterPosition();
+                    clickListener.onItemClick(itemView, position);
+
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // get the movie at the position, this won't work if the class is static
+                        Book book = mBooks.get(position);
+
+                        // create intent for the new activity
+                        Intent intent = new Intent(mContext, BookDetailActivity.class);
+
+                        // serialize the movie using parceler, use its short name as a key
+                        intent.putExtra(Book.class.getSimpleName(), Parcels.wrap(book));
+                        // show the activity
+                        mContext.startActivity(intent);
+                    }
                 }
             });
         }
