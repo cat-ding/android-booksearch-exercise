@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.android.booksearch.R;
 import com.codepath.android.booksearch.models.Book;
 
@@ -21,7 +23,6 @@ public class BookDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("HERE", "in BookDetailActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
         // Fetch views
@@ -31,10 +32,15 @@ public class BookDetailActivity extends AppCompatActivity {
 
         // Extract book object from intent extras
         Book book = (Book) Parcels.unwrap(getIntent().getParcelableExtra(Book.class.getSimpleName()));
-        Log.d("BookDetailActivity", String.format("Showing details for '%s'", book.getTitle()));
 
         // Use book object to populate data into views
         tvTitle.setText(book.getTitle());
+        tvAuthor.setText(book.getAuthor());
+        getSupportActionBar().setTitle(book.getTitle());
+
+        String coverUrl = book.getCoverUrl();
+        int radius = 30; // corner radius, higher value = more rounded
+        Glide.with(this).load(coverUrl).transform(new RoundedCorners(radius)).into(ivBookCover);
     }
 
 
